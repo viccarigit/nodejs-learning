@@ -1,7 +1,14 @@
 const express = require('express');
 const server = express();
+var count = 0;
 
 server.use(express.json());
+
+server.use((req, res, next) =>{
+
+    console.log(`Total reqs count: ${++count}`);
+    return next();
+});
 
 const projects = [];
 
@@ -9,12 +16,12 @@ server.post('/projects', (req, res) =>{
 
     const { id, title } = req.body;
 
-    projects.push({'id': id, 'title': title });
+    projects.push({'id': id, 'title': title, tasks: []});
 
     return res.json(projects);
 });
 
-server.put('/projects/:id/tasks', (req, res) =>{
+server.put('/projects/:id/tasks', checkIdIfExists, (req, res) =>{
 
     const { id } = req.params;
     const { title } = req.body;
@@ -25,7 +32,7 @@ server.put('/projects/:id/tasks', (req, res) =>{
     return res.json(projects[index]);
 });
 
-server.put('/projects/:id', (req, res) =>{
+server.put('/projects/:id', checkIdIfExists, (req, res) =>{
 
     const { id } = req.params;
     const { title } =  req.body;
@@ -40,7 +47,7 @@ server.get('/projects', (req, res) =>{
     return res.json(projects);
 });
 
-server.get('/projects/:id', (req, res) =>{
+server.get('/projects/:id', checkIdIfExists, (req, res) =>{
 
     const { id } = req.params;
 
@@ -56,6 +63,8 @@ function getProjectById(id){
     const project = projects.filter((element) =>{
         return element.id === id;
     });
+
+    return project;
 }
 
 /**
@@ -74,6 +83,24 @@ function getIndexById(id){
     }
 
     return index;
+}
+
+/**
+ * middlawere to verify if Id exists on array
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function checkIdIfExists(req, res, next){
+
+    const { id } = req.params;
+    const index = getIndexById(id);
+
+    if(index !== undefined){
+        return next();
+    }
+
+    return res.status(404).json({error: 'Project not founded'});
 }
 
 server.listen(3000, () =>{
