@@ -86,7 +86,7 @@ function getIndexById(id){
 }
 
 /**
- * middlawere to verify if Id exists on array
+ * middlewere to verify if Id exists on array
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
