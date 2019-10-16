@@ -4,6 +4,12 @@ var count = 0;
 
 server.use(express.json());
 
+/**
+ * middleware to count all reqs from client
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+*/
 server.use((req, res, next) =>{
 
     console.log(`Total reqs count: ${++count}`);
@@ -12,6 +18,11 @@ server.use((req, res, next) =>{
 
 const projects = [];
 
+/**
+ * creates a new project on array
+ * @param {*} req 
+ * @param {*} res 
+ */
 server.post('/projects', (req, res) =>{
 
     const { id, title } = req.body;
@@ -21,6 +32,11 @@ server.post('/projects', (req, res) =>{
     return res.json(projects);
 });
 
+/**
+ * add a new task on specific project
+ * @param {*} req 
+ * @param {*} res 
+*/
 server.put('/projects/:id/tasks', checkIdIfExists, (req, res) =>{
 
     const { id } = req.params;
@@ -32,6 +48,9 @@ server.put('/projects/:id/tasks', checkIdIfExists, (req, res) =>{
     return res.json(projects[index]);
 });
 
+/**
+ * change project's name by id
+ */
 server.put('/projects/:id', checkIdIfExists, (req, res) =>{
 
     const { id } = req.params;
