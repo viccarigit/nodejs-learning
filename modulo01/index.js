@@ -21,7 +21,7 @@ const users = ['Usuario 1', 'Usuario 2', 'Usuario 3'];
 // CRUD: create, read, update, delete
 
 /**
- * middlawere
+ * middlewere
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -36,7 +36,7 @@ function checkUserParam(req, res, next){
 }
 
 /**
- * middlawere
+ * middlewere
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
